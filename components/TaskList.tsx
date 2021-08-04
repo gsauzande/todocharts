@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
-import { Task } from "../../interfaces";
-import SimpleCard from "../../components/SimpleCard/SimpleCard";
+import { Task } from "../interfaces";
+import SimpleCard from "./SimpleCard/SimpleCard";
 
 type Props = {
   taskLists: Task[];

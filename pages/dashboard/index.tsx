@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import "./index.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { TaskList } from "./TaskList";
+import { TaskList } from "../../components/TaskList";
 import { Task } from "../../interfaces";
 import NavBar from "../../components/HomePage/NavBar";
 import withAuthProvider, {
