@@ -7,9 +7,17 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
+    "@azure/msal-browser": "^2.16.0",
+    "@microsoft/microsoft-graph-client": "^2.2.1",
+    "@types/microsoft-graph": "^2.0.0",
+    "bootstrap": "^5.0.2",
+    "moment": "^2.29.1",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-bootstrap": "^1.6.1",
+    "react-dom": "^17.0.2",
+    "recharts": "^2.0.10"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
