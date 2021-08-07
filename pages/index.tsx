@@ -56,19 +56,18 @@ class IndexPage extends Component<AuthComponentProps> {
               </p>
             </Col>
             <Col>
-              {/* <ChartsImage /> */}
-              <span>
+              <span style={{ marginLeft: "100px" }}>
                 <Image
                   src={tasksImage}
                   alt="List of tasks grouped by date when they were created"
                   height="400px"
+                  width="400px"
                 />
               </span>
             </Col>
           </Row>
-          <Row className="mt-5">
+          {/* <Row className="mt-5">
             <Col className="center-block text-center">
-              {/* <ChartsImage /> */}
               <span>
                 <img
                   src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -79,7 +78,7 @@ class IndexPage extends Component<AuthComponentProps> {
             <Col className={`text-right ${styles.landingPageFont}`}>
               <h2>Charts for tracking your todos</h2>
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </>
     );
