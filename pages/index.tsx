@@ -60,7 +60,7 @@ class IndexPage extends Component<AuthComponentProps> {
                 <Image
                   src={tasksImage}
                   alt="List of tasks grouped by date when they were created"
-                  height="400px"
+                  height="500px"
                   width="400px"
                 />
               </span>
