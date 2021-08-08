@@ -115,23 +115,21 @@ export default function withAuthProvider<
         // If the cache contains a non-expired token, this function
         // will just return the cached token. Otherwise, it will
         // make a request to the Azure OAuth endpoint to get a token
-        var silentResult = await this.publicClientApplication.acquireTokenSilent(
-          {
+        var silentResult =
+          await this.publicClientApplication.acquireTokenSilent({
             scopes: scopes,
             account: accounts[0],
-          }
-        );
+          });
 
         return silentResult.accessToken;
       } catch (err) {
         // If a silent request fails, it may be because the user needs
         // to login or grant consent to one or more of the requested scopes
         if (this.isInteractionRequired(err)) {
-          var interactiveResult = await this.publicClientApplication.acquireTokenPopup(
-            {
+          var interactiveResult =
+            await this.publicClientApplication.acquireTokenPopup({
               scopes: scopes,
-            }
-          );
+            });
 
           return interactiveResult.accessToken;
         } else {
