@@ -1,11 +1,11 @@
-.card-text {
+.cardText {
     font-size: 2rem;
     letter-spacing: -.02em;
     font-weight: 500;
     line-height: 1.1;
 }
 
-.task-text {
+.taskText {
     font-size: .77rem;
     font-weight: 400;
     line-height: 1.5;
@@ -14,6 +14,6 @@
     margin-left: 10px;
 }
 
-.task-date {
+.taskDate {
     font-size: 1.24rem;
 }

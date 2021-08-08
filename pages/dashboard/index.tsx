@@ -16,6 +16,7 @@ import withAuthProvider, {
   AuthComponentProps,
 } from "../../components/Authentication/AuthProvider";
 import SimpleCard from "../../components/SimpleCard/SimpleCard";
+import styles from "./index.module.css";
 
 type Props = AuthComponentProps;
 
@@ -92,7 +93,7 @@ class Dashboard extends React.Component<Props, State> {
         return (
           <>
             <Form.Check type="checkbox" />
-            <span className="task-text">{task.title}</span>
+            <span className={styles.taskText}>{task.title}</span>
             <br />
           </>
         );
@@ -120,14 +121,14 @@ class Dashboard extends React.Component<Props, State> {
     return (
       <>
         <NavBar />
-        <Container className="mt-4">
+        <Container style={{ marginTop: "100px" }}>
           <Row>
             <Col md={9}>
               <Row>
                 <Col md={4}>
                   <SimpleCard
                     content={
-                      <span className="card-text">
+                      <span className={styles.cardText}>
                         {this.getTaskByStatus("notStarted")?.length.toString()}
                       </span>
                     }
@@ -137,7 +138,7 @@ class Dashboard extends React.Component<Props, State> {
                 <Col md={4}>
                   <SimpleCard
                     content={
-                      <span className="card-text">
+                      <span className={styles.cardText}>
                         {this.getTaskByStatus("completed")?.length.toString()}
                       </span>
                     }
@@ -147,7 +148,7 @@ class Dashboard extends React.Component<Props, State> {
                 <Col md={4}>
                   <SimpleCard
                     content={
-                      <span className="card-text">
+                      <span className={styles.cardText}>
                         {this.getTaskByStatus("completed")?.length.toString()}
                       </span>
                     }

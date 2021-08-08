@@ -7,7 +7,7 @@
     padding: 15px;
 }
 
-.card-small-title {
+.cardSmallTitle {
     color: #8c98a4;
     font-weight: 600;
     font-family: 'Open Sans', sans-serif !important;
@@ -16,7 +16,7 @@
     font-size: .77rem
 }
 
-.top-border-highlight {
+.topBorderHighlight {
     border-top: 2px solid #08D9D6;
 }
 
