@@ -2,6 +2,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.css";
 
+declare global {
+  interface Window {
+    gtag: any;
+  }
+}
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
