@@ -12,7 +12,6 @@ class MyDocument extends Document {
         <Head>
           <title>Todocharts</title>
           <link rel="shortcut icon" href="/static/favicon.ico" />
-          <!-- Global site tag (gtag.js) - Google Analytics -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126190436-3"></script>
           <script>
             window.dataLayer = window.dataLayer || [];
