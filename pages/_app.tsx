@@ -1,22 +1,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.css";
+import * as gtag from "../lib/gtag";
 
-declare global {
-  interface Window {
-    gtag: any;
-  }
-}
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
-
-  const handleRouteChange = (url: URL) => {
-    window.gtag("config", "[Tracking ID]", {
-      page_path: url,
-    });
-  };
-
   useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
