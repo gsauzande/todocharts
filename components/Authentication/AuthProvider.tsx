@@ -5,6 +5,7 @@ import { PublicClientApplication } from "@azure/msal-browser";
 
 import { config } from "./Config";
 import { getUserDetails } from "./GraphService";
+import { User } from "@prisma/client";
 
 export interface AuthComponentProps {
   error: any;
@@ -144,7 +145,11 @@ export default function withAuthProvider<
         const accessToken = await this.getAccessToken(config.scopes);
         if (accessToken) {
           // Get the user's profile from Graph
-          var user = await getUserDetails(accessToken);
+          const user = await getUserDetails(accessToken);
+          this.saveUser({
+            ...user,
+            mail: user.mail || user.userPrincipalName,
+          });
           this.setState({
             isAuthenticated: true,
             accessToken: accessToken,
@@ -165,6 +170,17 @@ export default function withAuthProvider<
         });
       }
     }
+    saveUser = async (user: User) => {
+      try {
+        await fetch("/api/user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
     // </getUserProfileSnippet>
 
     setErrorMessage(message: string, debug: string) {

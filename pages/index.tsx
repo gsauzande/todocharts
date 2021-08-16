@@ -66,6 +66,16 @@ class IndexPage extends Component<AuthComponentProps> {
               </span>
             </Col>
           </Row>
+          <Row className="center-block text-center py-5">
+            <footer>
+              <a
+                href="https://us3.list-manage.com/contact-form?u=7e7780872f87c9211e4360b20&form_id=470b361eb465e14260bf139ce541f7b2"
+                className={styles.link}
+              >
+                Contact us
+              </a>
+            </footer>
+          </Row>
           {/* <Row className="mt-5">
             <Col className="center-block text-center">
               <span>
