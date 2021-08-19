@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 import React from "react";
-import { PublicClientApplication } from "@azure/msal-browser";
+import { EventType, PublicClientApplication } from "@azure/msal-browser";
 
 import { config } from "./Config";
 import { getUserDetails } from "./GraphService";
@@ -83,8 +83,13 @@ export default function withAuthProvider<
         />
       );
     }
-
     async login() {
+      this.publicClientApplication.addEventCallback((message) => {
+        switch (message.eventType) {
+          case EventType.LOGIN_SUCCESS:
+            window.location.href = "/dashboard";
+        }
+      });
       try {
         // Login via popup
         await this.publicClientApplication.loginPopup({
