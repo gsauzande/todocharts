@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Badge, Button, Container, Nav, Navbar } from "react-bootstrap";
 import Image from "next/image";
 import withAuthProvider, {
   AuthComponentProps,
@@ -7,6 +7,7 @@ import withAuthProvider, {
 import { MicrosoftIcon } from "./MicrosoftIcon";
 import { LogoutOutlined } from "@ant-design/icons";
 import logo from "../../images/logo.png";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 type Props = AuthComponentProps;
 class NavBar extends Component<Props> {
@@ -25,6 +26,12 @@ class NavBar extends Component<Props> {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav justify-content-end">
             <Nav>
+              {/* <Nav.Link href="/features">
+                New features
+                <Badge variant="danger" pill>
+                  2
+                </Badge>
+              </Nav.Link> */}
               {this.props.isAuthenticated && (
                 <Nav.Link href="/dashboard">Dashboard</Nav.Link>
               )}

@@ -17,6 +17,7 @@ import withAuthProvider, {
 } from "../../components/Authentication/AuthProvider";
 import SimpleCard from "../../components/SimpleCard/SimpleCard";
 import styles from "./index.module.css";
+import moment from "moment";
 
 type Props = AuthComponentProps;
 
@@ -87,6 +88,18 @@ class Dashboard extends React.Component<Props, State> {
       : [];
   };
 
+  getTasksCompletedOn = (dateTime: string): Task[] => {
+    return this.state.taskLists
+      ? this.state.taskLists.filter((task) => {
+          if (!task.completedDateTime) return false;
+          return moment
+            .utc(task.completedDateTime.dateTime)
+            .local()
+            .isSame(dateTime, "day");
+        })
+      : [];
+  };
+
   renderTasks = (tasks: Task[]) => {
     if (this.props.isAuthenticated) {
       return tasks.map((task) => {
@@ -103,10 +116,12 @@ class Dashboard extends React.Component<Props, State> {
 
   chartData = () => {
     const groupedTasks = this.getGroupedTasks();
-    return Object.keys(groupedTasks).map((date) => ({
-      name: date,
-      tasks: groupedTasks[date].length,
-    }));
+    return Object.keys(groupedTasks)
+      .reverse()
+      .map((date) => ({
+        name: date,
+        tasks: groupedTasks[date].length,
+      }));
   };
 
   rowCount = () => this.chartData().length - 1;
@@ -149,7 +164,9 @@ class Dashboard extends React.Component<Props, State> {
                   <SimpleCard
                     content={
                       <span className={styles.cardText}>
-                        {this.getTaskByStatus("completed")?.length.toString()}
+                        {this.getTasksCompletedOn(
+                          moment().format()
+                        ).length.toString()}
                       </span>
                     }
                     title="Total completed tasks today"
