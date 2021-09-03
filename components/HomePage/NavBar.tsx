@@ -26,6 +26,7 @@ class NavBar extends Component<Props> {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav justify-content-end">
             <Nav>
+              <Nav.Link href="https://blog.todocharts.com/">Blog</Nav.Link>
               {/* <Nav.Link href="/features">
                 New features
                 <Badge variant="danger" pill>

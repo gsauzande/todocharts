@@ -18,7 +18,7 @@ class IndexPage extends Component<AuthComponentProps> {
         <NavBar />
         <Container className={`${styles.customContainer} mt-3`}>
           <Row className="center-block text-center">
-            <Col>
+            <Col md={12} xs={12}>
               <TextDescription />
             </Col>
           </Row>
@@ -42,8 +42,12 @@ class IndexPage extends Component<AuthComponentProps> {
               </Button>
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col className={`text-right ${styles.landingPageFont}`}>
+          <Row className="mt-5 center-block text-center">
+            <Col
+              className={`text-right ${styles.landingPageFont}`}
+              md={12}
+              xs={12}
+            >
               <h2>See your finished tasks organized by date.</h2>
               <p>
                 If you'd like to know how many tasks you completed the day
@@ -55,8 +59,10 @@ class IndexPage extends Component<AuthComponentProps> {
                 check-in meeting or simply to track how productive you were.
               </p>
             </Col>
-            <Col>
-              <span style={{ marginLeft: "100px" }}>
+          </Row>
+          <Row className="mt-3 center-block text-center">
+            <Col md={12} xs={12}>
+              <span>
                 <Image
                   src={tasksImage}
                   alt="List of tasks grouped by date when they were created"
