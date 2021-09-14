@@ -7,9 +7,9 @@ import {
   Area,
   Tooltip,
 } from "recharts";
+import moment from "moment";
 import "./index.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { TaskList } from "../../components/TaskList";
 import { Task } from "../../interfaces";
 import NavBar from "../../components/HomePage/NavBar";
 import withAuthProvider, {
@@ -17,7 +17,7 @@ import withAuthProvider, {
 } from "../../components/Authentication/AuthProvider";
 import SimpleCard from "../../components/SimpleCard/SimpleCard";
 import styles from "./index.module.css";
-import moment from "moment";
+import { HashtagTasks, TaskList } from "../../components";
 
 type Props = AuthComponentProps;
 
@@ -209,6 +209,7 @@ class Dashboard extends React.Component<Props, State> {
             </Col>
             <Col md={3}>
               <TaskList taskLists={this.state.taskLists} />
+              <HashtagTasks />
             </Col>
           </Row>
         </Container>
