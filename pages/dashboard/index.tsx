@@ -36,6 +36,15 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   baseUrl = "https://graph.microsoft.com/v1.0/me/";
+
+  componentDidUpdate(previousProps: Props, previousState: State) {
+    if (previousProps.isAuthenticated !== this.props.isAuthenticated) {
+      if (this.props.isAuthenticated && this.state.taskLists.length < 1) {
+        this.getTasks();
+      }
+    }
+  }
+
   getAPIData = (url: string, accessToken: string): Promise<any> => {
     return new Promise((resolve, reject) => {
       const todoListUrl = this.baseUrl + url;
@@ -68,7 +77,7 @@ class Dashboard extends React.Component<Props, State> {
   getGroupedTasks = () => {
     let finalObj: any = {};
     if (this.state) {
-      this.state.taskLists.forEach((task) => {
+      this.state.taskLists?.forEach((task) => {
         if (task.completedDateTime) {
           const date = task.completedDateTime.dateTime.split("T")[0];
           if (finalObj[date]) {
@@ -128,11 +137,6 @@ class Dashboard extends React.Component<Props, State> {
   aspect = () => 15 / this.rowCount();
 
   render() {
-    const { isAuthenticated } = this.props;
-    if (isAuthenticated && this.state.taskLists.length < 1) {
-      this.getTasks();
-    }
-
     return (
       <>
         <NavBar />

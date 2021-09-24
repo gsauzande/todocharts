@@ -10,7 +10,7 @@ export const TaskList = ({ taskLists }: Props) => {
   const groupTasks = () => {
     let finalObj: any = {};
 
-    taskLists.forEach((task) => {
+    taskLists?.forEach((task) => {
       const date = task.createdDateTime.split("T")[0];
       if (finalObj[date]) {
         finalObj[date].push(task);

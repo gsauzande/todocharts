@@ -151,18 +151,19 @@ export default function withAuthProvider<
         if (accessToken) {
           // Get the user's profile from Graph
           const user = await getUserDetails(accessToken);
-          this.saveUser({
-            ...user,
-            mail: user.mail || user.userPrincipalName,
-          });
+          // this.saveUser({
+          //   ...user,
+          //   mail: user.email,
+          // });
+
           this.setState({
             isAuthenticated: true,
             accessToken: accessToken,
             user: {
-              displayName: user.displayName,
-              email: user.mail || user.userPrincipalName,
-              timeZone: user.mailboxSettings.timeZone || "UTC",
-              timeFormat: user.mailboxSettings.timeFormat,
+              // displayName: user.displayName,
+              // email: user.email,
+              // timeZone: user.mailboxSettings.timeZone || "UTC",
+              // timeFormat: user.mailboxSettings.timeFormat,
             },
             error: null,
           });

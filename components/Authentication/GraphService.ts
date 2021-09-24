@@ -24,15 +24,20 @@ function getAuthenticatedClient(accessToken: string) {
   return client;
 }
 
-export async function getUserDetails(accessToken: string) {
-  const client = getAuthenticatedClient(accessToken);
+export function getUserDetails(accessToken: string): any {
+  // const client = getAuthenticatedClient(accessToken);
 
-  const user = await client
-    .api("/me")
-    .select("displayName,mail,mailboxSettings,userPrincipalName")
-    .get();
+  // const user = await client
+  //   .api("/me")
+  //   .select("displayName,mail,mailboxSettings,userPrincipalName")
+  //   .get();
 
-  return user;
+  return {
+    displayName: "Gasten",
+    email: "gasten@hotmail.com",
+    timeZone: "UTC",
+    timeFormat: null,
+  };
 }
 // </graphServiceSnippet1>
 
