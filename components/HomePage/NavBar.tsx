@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Badge, Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import Image from "next/image";
 import withAuthProvider, {
   AuthComponentProps,

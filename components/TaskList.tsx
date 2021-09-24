@@ -21,6 +21,19 @@ export const TaskList = ({ taskLists }: Props) => {
 
     return finalObj;
   };
+
+  const getHashtags = (inputText) => {
+    const regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+    const matches = [];
+    let match;
+
+    while ((match = regex.exec(inputText))) {
+      matches.push(match[1]);
+    }
+
+    return matches;
+  };
+
   const renderGroupedTasks = () => {
     const groupedTasks = groupTasks();
     return Object.keys(groupedTasks).map((date) => {
@@ -47,6 +60,7 @@ export const TaskList = ({ taskLists }: Props) => {
       );
     });
   };
+  const hashtags = () => {};
   return (
     <SimpleCard
       content={renderGroupedTasks()}

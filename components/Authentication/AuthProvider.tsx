@@ -59,10 +59,15 @@ export default function withAuthProvider<
       // If MSAL already has an account, the user
       // is already logged in
       const accounts = this.publicClientApplication.getAllAccounts();
-
       if (accounts && accounts.length > 0) {
         // Enhance user object with data from Graph
-        this.getUserProfile();
+        // this.getUserProfile();
+        this.getAccessToken(config.scopes).then((accessToken) =>
+          this.setState({
+            isAuthenticated: true,
+            accessToken: accessToken,
+          })
+        );
       }
     }
 

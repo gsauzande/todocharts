@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import "bootstrap/dist/css/bootstrap.css";
 import * as gtag from "../lib/gtag";
 
 export default function MyApp({ Component, pageProps }) {

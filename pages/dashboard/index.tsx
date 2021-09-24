@@ -36,6 +36,13 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   baseUrl = "https://graph.microsoft.com/v1.0/me/";
+  componentDidMount() {
+    const { isAuthenticated } = this.props;
+    debugger;
+    if (isAuthenticated && this.state.taskLists?.length < 1) {
+      this.getTasks();
+    }
+  }
   getAPIData = (url: string, accessToken: string): Promise<any> => {
     return new Promise((resolve, reject) => {
       const todoListUrl = this.baseUrl + url;
@@ -128,11 +135,6 @@ class Dashboard extends React.Component<Props, State> {
   aspect = () => 15 / this.rowCount();
 
   render() {
-    const { isAuthenticated } = this.props;
-    if (isAuthenticated && this.state.taskLists.length < 1) {
-      this.getTasks();
-    }
-
     return (
       <>
         <NavBar />
@@ -209,7 +211,8 @@ class Dashboard extends React.Component<Props, State> {
             </Col>
             <Col md={3}>
               <TaskList taskLists={this.state.taskLists} />
-              <HashtagTasks />
+              <br />
+              <HashtagTasks taskList={this.state.taskLists} />
             </Col>
           </Row>
         </Container>
