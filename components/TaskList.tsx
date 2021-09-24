@@ -39,7 +39,7 @@ export const TaskList = ({ taskLists }: Props) => {
             }
             return (
               <div className="task-text" key={task.id}>
-                {task.title}
+                ➖ {task.title}
               </div>
             );
           })}

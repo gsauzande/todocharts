@@ -64,8 +64,13 @@ class Dashboard extends React.Component<Props, State> {
         data.value.forEach((todoList: any) => {
           const url = `todo/lists/${todoList.id}/tasks`;
           this.getAPIData(url, this.props.accessToken).then((result) => {
+            let newTaskList = this.state.taskLists;
+            if (Array.isArray(result.value)) {
+              newTaskList = [...this.state.taskLists, ...result.value];
+            }
+
             this.setState({
-              taskLists: result.value,
+              taskLists: newTaskList,
             });
             this.getGroupedTasks();
           });
