@@ -4,13 +4,13 @@ import { Task } from "../interfaces";
 import SimpleCard from "./SimpleCard/SimpleCard";
 
 type Props = {
-  taskLists: Task[];
+  tasks: Task[];
 };
-export const TaskList = ({ taskLists }: Props) => {
+export const TaskLister = ({ tasks }: Props) => {
   const groupTasks = () => {
     let finalObj: any = {};
 
-    taskLists?.forEach((task) => {
+    tasks?.forEach((task) => {
       const date = task.createdDateTime.split("T")[0];
       if (finalObj[date]) {
         finalObj[date].push(task);

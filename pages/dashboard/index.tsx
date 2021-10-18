@@ -9,8 +9,8 @@ import {
 } from "recharts";
 import "./index.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { TaskList } from "../../components/TaskList";
-import { Task } from "../../interfaces";
+import { TaskLister } from "../../components/TaskLister";
+import { Task, TaskList } from "../../interfaces";
 import NavBar from "../../components/HomePage/NavBar";
 import withAuthProvider, {
   AuthComponentProps,
@@ -23,7 +23,8 @@ type Props = AuthComponentProps;
 
 type State = {
   isOpen: boolean;
-  taskLists: Task[];
+  tasks: Task[];
+  taskLists: TaskList[];
 };
 
 class Dashboard extends React.Component<Props, State> {
@@ -31,6 +32,7 @@ class Dashboard extends React.Component<Props, State> {
     super(props);
     this.state = {
       isOpen: false,
+      tasks: [],
       taskLists: [],
     };
   }
@@ -39,50 +41,65 @@ class Dashboard extends React.Component<Props, State> {
 
   componentDidUpdate(previousProps: Props, previousState: State) {
     if (previousProps.isAuthenticated !== this.props.isAuthenticated) {
-      if (this.props.isAuthenticated && this.state.taskLists.length < 1) {
-        this.getTasks();
+      if (this.props.isAuthenticated && this.state.tasks.length < 1) {
+        this.getTaskLists();
       }
     }
   }
 
-  getAPIData = (url: string, accessToken: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      const todoListUrl = this.baseUrl + url;
-      fetch(todoListUrl, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-        .then((data) => {
-          resolve(data.json());
-        })
-        .catch((err) => reject(err));
+  getTaskLists = () => {
+    fetch(`/api/tasks/lists?token=${this.props.accessToken}`, {
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      response.json().then((data) => {
+        this.setState({ taskLists: data.value });
+        this.getTasks();
+      });
     });
   };
 
   getTasks = () => {
-    this.getAPIData("todo/lists", this.props.accessToken).then((data) => {
-      if (data.value) {
-        data.value.forEach((todoList: any) => {
-          const url = `todo/lists/${todoList.id}/tasks`;
-          this.getAPIData(url, this.props.accessToken).then((result) => {
-            let newTaskList = this.state.taskLists;
-            if (Array.isArray(result.value)) {
-              newTaskList = [...this.state.taskLists, ...result.value];
-            }
-
-            this.setState({
-              taskLists: newTaskList,
-            });
-            this.getGroupedTasks();
-          });
+    if (this.state.taskLists.length > 0) {
+      this.state.taskLists.forEach((taskList) => {
+        fetch(
+          `/api/tasks?token=${this.props.accessToken}&taskListId=${taskList.id}`,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        ).then((response) => {
+          response
+            .json()
+            .then((data) =>
+              this.setState({ tasks: [...this.state.tasks, ...data.value] })
+            );
         });
-      }
-    });
+      });
+    }
+
+    // this.getAPIData("todo/lists", this.props.accessToken).then((data: []) => {
+    //   console.warn(data);
+    //   if (data.length > 0) {
+    //     data.forEach((todoList: any) => {
+    //       const url = `todo/lists/${todoList.id}/tasks?$count=true`;
+    //       this.getAPIData(url, this.props.accessToken)
+    //         .then((result) => {
+    //           this.setState({
+    //             taskLists: [...this.state.tasks, ...result],
+    //           });
+    //           this.getGroupedTasks();
+    //         })
+    //         .catch((err) => {
+    //           console.error("ERRORED", err);
+    //         });
+    //     });
+    //   }
+    // });
   };
 
   getGroupedTasks = () => {
     let finalObj: any = {};
     if (this.state) {
-      this.state.taskLists?.forEach((task) => {
+      this.state.tasks?.forEach((task) => {
         if (task.completedDateTime) {
           const date = task.completedDateTime.dateTime.split("T")[0];
           if (finalObj[date]) {
@@ -97,14 +114,20 @@ class Dashboard extends React.Component<Props, State> {
   };
 
   getTaskByStatus = (status?: string): Task[] => {
-    return this.state.taskLists
-      ? this.state.taskLists.filter((task) => task.status === status)
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => task.status === status)
+      : [];
+  };
+
+  getOpenTasks = () => {
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => task.status !== "completed")
       : [];
   };
 
   getTasksCompletedOn = (dateTime: string): Task[] => {
-    return this.state.taskLists
-      ? this.state.taskLists.filter((task) => {
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => {
           if (!task.completedDateTime) return false;
           return moment
             .utc(task.completedDateTime.dateTime)
@@ -153,7 +176,7 @@ class Dashboard extends React.Component<Props, State> {
                   <SimpleCard
                     content={
                       <span className={styles.cardText}>
-                        {this.getTaskByStatus("notStarted")?.length.toString()}
+                        {this.getOpenTasks()?.length.toString()}
                       </span>
                     }
                     title="Total open tasks"
@@ -217,7 +240,7 @@ class Dashboard extends React.Component<Props, State> {
               </Row>
             </Col>
             <Col md={3}>
-              <TaskList taskLists={this.state.taskLists} />
+              <TaskLister tasks={this.state.tasks} />
             </Col>
           </Row>
         </Container>
