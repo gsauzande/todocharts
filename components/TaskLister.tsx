@@ -2,15 +2,17 @@ import React from "react";
 import moment from "moment";
 import { Task } from "../interfaces";
 import SimpleCard from "./SimpleCard/SimpleCard";
+import { Spinner } from "react-bootstrap";
 
 type Props = {
-  taskLists: Task[];
+  tasks: Task[];
+  isLoading: boolean;
 };
-export const TaskList = ({ taskLists }: Props) => {
+export const TaskLister = ({ tasks, isLoading }: Props) => {
   const groupTasks = () => {
     let finalObj: any = {};
 
-    taskLists?.forEach((task) => {
+    tasks?.forEach((task) => {
       const date = task.createdDateTime.split("T")[0];
       if (finalObj[date]) {
         finalObj[date].push(task);
@@ -49,6 +51,7 @@ export const TaskList = ({ taskLists }: Props) => {
   };
   return (
     <SimpleCard
+      isLoading={isLoading}
       content={renderGroupedTasks()}
       title="Task list"
       scrollable={true}

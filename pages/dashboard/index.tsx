@@ -8,9 +8,16 @@ import {
   Tooltip,
 } from "recharts";
 import "./index.module.css";
-import { Col, Container, Form, Row } from "react-bootstrap";
-import { TaskList } from "../../components/TaskList";
-import { Task } from "../../interfaces";
+import {
+  Col,
+  Container,
+  Form,
+  ProgressBar,
+  Row,
+  Spinner,
+} from "react-bootstrap";
+import { TaskLister } from "../../components/TaskLister";
+import { Task, TaskList } from "../../interfaces";
 import NavBar from "../../components/HomePage/NavBar";
 import withAuthProvider, {
   AuthComponentProps,
@@ -23,7 +30,10 @@ type Props = AuthComponentProps;
 
 type State = {
   isOpen: boolean;
-  taskLists: Task[];
+  loading: boolean;
+  tasks: Task[];
+  taskLists: TaskList[];
+  fetchedListCount: number;
 };
 
 class Dashboard extends React.Component<Props, State> {
@@ -31,7 +41,10 @@ class Dashboard extends React.Component<Props, State> {
     super(props);
     this.state = {
       isOpen: false,
+      loading: false,
+      tasks: [],
       taskLists: [],
+      fetchedListCount: 0,
     };
   }
 
@@ -39,50 +52,53 @@ class Dashboard extends React.Component<Props, State> {
 
   componentDidUpdate(previousProps: Props, previousState: State) {
     if (previousProps.isAuthenticated !== this.props.isAuthenticated) {
-      if (this.props.isAuthenticated && this.state.taskLists.length < 1) {
-        this.getTasks();
+      if (this.props.isAuthenticated && this.state.tasks.length < 1) {
+        this.getTaskLists();
       }
     }
   }
 
-  getAPIData = (url: string, accessToken: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      const todoListUrl = this.baseUrl + url;
-      fetch(todoListUrl, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-        .then((data) => {
-          resolve(data.json());
-        })
-        .catch((err) => reject(err));
+  getTaskLists = () => {
+    fetch(`/api/tasks/lists?token=${this.props.accessToken}`, {
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      response.json().then((data) => {
+        this.setState({ taskLists: data.value });
+        this.getTasks();
+      });
     });
   };
 
   getTasks = () => {
-    this.getAPIData("todo/lists", this.props.accessToken).then((data) => {
-      if (data.value) {
-        data.value.forEach((todoList: any) => {
-          const url = `todo/lists/${todoList.id}/tasks`;
-          this.getAPIData(url, this.props.accessToken).then((result) => {
-            let newTaskList = this.state.taskLists;
-            if (Array.isArray(result.value)) {
-              newTaskList = [...this.state.taskLists, ...result.value];
+    if (this.state.taskLists.length > 0) {
+      this.setState({ loading: true });
+      this.state.taskLists.forEach((taskList, index) => {
+        fetch(
+          `/api/tasks?token=${this.props.accessToken}&taskListId=${taskList.id}`,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        ).then((response) => {
+          response.json().then((data) => {
+            if (data) {
+              this.setState({ tasks: [...this.state.tasks, ...data] });
+              this.setState({
+                fetchedListCount: this.state.fetchedListCount + 1,
+              });
+              if (index === 0) {
+                this.setState({ loading: false });
+              }
             }
-
-            this.setState({
-              taskLists: newTaskList,
-            });
-            this.getGroupedTasks();
           });
         });
-      }
-    });
+      });
+    }
   };
 
   getGroupedTasks = () => {
     let finalObj: any = {};
     if (this.state) {
-      this.state.taskLists?.forEach((task) => {
+      this.state.tasks?.forEach((task) => {
         if (task.completedDateTime) {
           const date = task.completedDateTime.dateTime.split("T")[0];
           if (finalObj[date]) {
@@ -97,14 +113,20 @@ class Dashboard extends React.Component<Props, State> {
   };
 
   getTaskByStatus = (status?: string): Task[] => {
-    return this.state.taskLists
-      ? this.state.taskLists.filter((task) => task.status === status)
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => task.status === status)
+      : [];
+  };
+
+  getOpenTasks = () => {
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => task.status !== "completed")
       : [];
   };
 
   getTasksCompletedOn = (dateTime: string): Task[] => {
-    return this.state.taskLists
-      ? this.state.taskLists.filter((task) => {
+    return this.state.tasks
+      ? this.state.tasks.filter((task) => {
           if (!task.completedDateTime) return false;
           return moment
             .utc(task.completedDateTime.dateTime)
@@ -140,20 +162,35 @@ class Dashboard extends React.Component<Props, State> {
 
   rowCount = () => this.chartData().length - 1;
   aspect = () => 15 / this.rowCount();
+  currentPercentage = () =>
+    Math.round(
+      (this.state.fetchedListCount * 100) / this.state.taskLists.length
+    );
 
   render() {
     return (
       <>
         <NavBar />
         <Container style={{ marginTop: "100px" }}>
+          {this.state.loading && (
+            <>
+              Loading all your tasks...
+              <ProgressBar
+                now={this.currentPercentage()}
+                label={`${this.currentPercentage()}%`}
+              />
+            </>
+          )}
+          <br />
           <Row>
             <Col md={9}>
               <Row>
                 <Col md={4}>
                   <SimpleCard
+                    isLoading={this.state.loading}
                     content={
                       <span className={styles.cardText}>
-                        {this.getTaskByStatus("notStarted")?.length.toString()}
+                        {this.getOpenTasks()?.length.toString()}
                       </span>
                     }
                     title="Total open tasks"
@@ -161,6 +198,7 @@ class Dashboard extends React.Component<Props, State> {
                 </Col>
                 <Col md={4}>
                   <SimpleCard
+                    isLoading={this.state.loading}
                     content={
                       <span className={styles.cardText}>
                         {this.getTaskByStatus("completed")?.length.toString()}
@@ -171,6 +209,7 @@ class Dashboard extends React.Component<Props, State> {
                 </Col>
                 <Col md={4}>
                   <SimpleCard
+                    isLoading={this.state.loading}
                     content={
                       <span className={styles.cardText}>
                         {this.getTasksCompletedOn(
@@ -186,6 +225,7 @@ class Dashboard extends React.Component<Props, State> {
               <Row>
                 <Col md={12}>
                   <SimpleCard
+                    isLoading={this.state.loading}
                     content={
                       <ResponsiveContainer width="100%" height={400}>
                         <AreaChart
@@ -217,7 +257,10 @@ class Dashboard extends React.Component<Props, State> {
               </Row>
             </Col>
             <Col md={3}>
-              <TaskList taskLists={this.state.taskLists} />
+              <TaskLister
+                isLoading={this.state.loading}
+                tasks={this.state.tasks}
+              />
             </Col>
           </Row>
         </Container>
