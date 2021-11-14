@@ -2,11 +2,13 @@ import React from "react";
 import moment from "moment";
 import { Task } from "../interfaces";
 import SimpleCard from "./SimpleCard/SimpleCard";
+import { Spinner } from "react-bootstrap";
 
 type Props = {
   tasks: Task[];
+  isLoading: boolean;
 };
-export const TaskLister = ({ tasks }: Props) => {
+export const TaskLister = ({ tasks, isLoading }: Props) => {
   const groupTasks = () => {
     let finalObj: any = {};
 
@@ -49,6 +51,7 @@ export const TaskLister = ({ tasks }: Props) => {
   };
   return (
     <SimpleCard
+      isLoading={isLoading}
       content={renderGroupedTasks()}
       title="Task list"
       scrollable={true}

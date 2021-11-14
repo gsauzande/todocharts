@@ -7,12 +7,27 @@ export default async function handle(req, res) {
   const token = req.query.token;
   const taskListId = req.query.taskListId;
   const url = baseUrl + `${taskListId}/tasks`;
+  const data = await getTasks(url, token);
+  console.warn("Values", data.length);
+
+  res.json(data);
+}
+
+const getTasks = async (url: string, token: string) => {
   const data = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((response) => response.json())
-    .then((data) => data)
-    .catch((err) => res.json(err.body));
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => err.body);
 
-  res.json(data);
-}
+  const values = data.value ? [...data.value] : [];
+  if (data["@odata.nextLink"]) {
+    // console.warn(data["@odata.nextLink"]);
+    return values.concat(await getTasks(data["@odata.nextLink"], token));
+  } else {
+    return values;
+  }
+};
