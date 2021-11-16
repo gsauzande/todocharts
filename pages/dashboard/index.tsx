@@ -154,7 +154,7 @@ class Dashboard extends React.Component<Props, State> {
     const groupedTasks = this.getGroupedTasks();
     const sortedDates = Object.keys(groupedTasks)
       .sort(function (a, b) {
-        return new Date(b) - new Date(a);
+        return new Date(b).getTime() - new Date(a).getTime();
       })
       // Setting the cap at 30 days
       .slice(0, 29);

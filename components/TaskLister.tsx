@@ -26,7 +26,7 @@ export const TaskLister = ({ tasks, isLoading }: Props) => {
   const renderGroupedTasks = () => {
     const groupedTasks = groupTasks();
     const sortedDates = Object.keys(groupedTasks).sort(function (a, b) {
-      return new Date(b) - new Date(a);
+      return new Date(b).getTime() - new Date(a).getTime();
     });
     return sortedDates.map((date) => (
       <div key={date}>
