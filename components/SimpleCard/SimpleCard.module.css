@@ -22,5 +22,5 @@
 
 .scrollable {
     overflow-y: scroll;
-    max-height: 400px;
+    max-height: 500px;
 }

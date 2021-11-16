@@ -8,7 +8,6 @@ export default async function handle(req, res) {
   const taskListId = req.query.taskListId;
   const url = baseUrl + `${taskListId}/tasks`;
   const data = await getTasks(url, token);
-  console.warn("Values", data.length);
 
   res.json(data);
 }

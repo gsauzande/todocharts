@@ -152,12 +152,17 @@ class Dashboard extends React.Component<Props, State> {
 
   chartData = () => {
     const groupedTasks = this.getGroupedTasks();
-    return Object.keys(groupedTasks)
-      .reverse()
-      .map((date) => ({
-        name: date,
-        tasks: groupedTasks[date].length,
-      }));
+    const sortedDates = Object.keys(groupedTasks)
+      .sort(function (a, b) {
+        return new Date(b) - new Date(a);
+      })
+      // Setting the cap at 30 days
+      .slice(0, 29);
+
+    return sortedDates.map((date) => ({
+      name: date,
+      tasks: groupedTasks[date].length,
+    }));
   };
 
   rowCount = () => this.chartData().length - 1;
@@ -251,7 +256,7 @@ class Dashboard extends React.Component<Props, State> {
                         </AreaChart>
                       </ResponsiveContainer>
                     }
-                    title="Total completed tasks"
+                    title="Total completed tasks(last 30 days)"
                   />
                 </Col>
               </Row>
