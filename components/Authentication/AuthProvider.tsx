@@ -151,10 +151,10 @@ export default function withAuthProvider<
         if (accessToken) {
           // Get the user's profile from Graph
           const user = await getUserDetails(accessToken);
-          // this.saveUser({
-          //   ...user,
-          //   mail: user.email,
-          // });
+          this.saveUser({
+            ...user,
+            mail: user.email,
+          });
 
           this.setState({
             isAuthenticated: true,

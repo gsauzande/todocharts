@@ -4,12 +4,10 @@ import prisma from "../../../lib/prisma";
 // Required fields in body: displayName
 // Optional fields in body: email
 export default async function handle(req, res) {
-  const { displayName, mail } = req.body;
-
   const result = await prisma.user.create({
     data: {
-      displayName,
-      mail,
+      displayName: req.body.displayName,
+      mail: req.body.email || req.body.mail,
     },
   });
   res.json(result);
