@@ -25,6 +25,7 @@ import withAuthProvider, {
 import SimpleCard from "../../components/SimpleCard/SimpleCard";
 import styles from "./index.module.css";
 import moment from "moment";
+import { CompletedTaskLister } from "../../components/CompletedTaskLister";
 
 type Props = AuthComponentProps;
 
@@ -263,6 +264,15 @@ class Dashboard extends React.Component<Props, State> {
             </Col>
             <Col md={3}>
               <TaskLister
+                isLoading={this.state.loading}
+                tasks={this.state.tasks}
+              />
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col md={4}>
+              <CompletedTaskLister
                 isLoading={this.state.loading}
                 tasks={this.state.tasks}
               />
