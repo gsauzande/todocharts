@@ -79,19 +79,23 @@ class Dashboard extends React.Component<Props, State> {
           {
             headers: { "Content-Type": "application/json" },
           }
-        ).then((response) => {
-          response.json().then((data) => {
-            if (data) {
-              this.setState({ tasks: [...this.state.tasks, ...data] });
-              this.setState({
-                fetchedListCount: this.state.fetchedListCount + 1,
-              });
-              if (index === 0) {
-                this.setState({ loading: false });
+        )
+          .then((response) => {
+            response.json().then((data) => {
+              if (data) {
+                this.setState({ tasks: [...this.state.tasks, ...data] });
+                this.setState({
+                  fetchedListCount: this.state.fetchedListCount + 1,
+                });
+                if (index === 0) {
+                  this.setState({ loading: false });
+                }
               }
-            }
+            });
+          })
+          .catch(() => {
+            this.setState({ loading: false });
           });
-        });
       });
     }
   };
