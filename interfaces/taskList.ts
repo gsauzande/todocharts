@@ -1,3 +1,6 @@
+import { User } from "@prisma/client";
+import { Task } from "./task";
+
 export interface TaskList {
   displayName: string;
   isOwner: boolean;
@@ -5,4 +8,6 @@ export interface TaskList {
   title: string;
   wellknownListName: string;
   id: string;
+  tasks: Task[];
+  creator: User;
 }

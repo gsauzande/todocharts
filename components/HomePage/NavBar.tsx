@@ -5,12 +5,21 @@ import withAuthProvider, {
   AuthComponentProps,
 } from "../Authentication/AuthProvider";
 import { MicrosoftIcon } from "./MicrosoftIcon";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UndoOutlined } from "@ant-design/icons";
 import logo from "../../images/logo.png";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 type Props = AuthComponentProps;
 class NavBar extends Component<Props> {
+  onRefreshTasksClick = () => {
+    fetch(`/api/tasks/refresh?token=${this.props.accessToken}`, {
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      response.json().then((data) => {
+        console.warn("done");
+      });
+    });
+  };
   render() {
     return (
       <Navbar expand="lg" fixed="top" style={{ backgroundColor: "#ffffff" }}>
@@ -27,12 +36,6 @@ class NavBar extends Component<Props> {
           <Navbar.Collapse id="basic-navbar-nav justify-content-end">
             <Nav>
               <Nav.Link href="https://blog.todocharts.com/">Blog</Nav.Link>
-              {/* <Nav.Link href="/features">
-                New features
-                <Badge variant="danger" pill>
-                  2
-                </Badge>
-              </Nav.Link> */}
               {this.props.isAuthenticated && (
                 <Nav.Link href="/dashboard">Dashboard</Nav.Link>
               )}
@@ -43,13 +46,21 @@ class NavBar extends Component<Props> {
                 </Button>
               )}
               {this.props.isAuthenticated && (
-                <Button
-                  style={{ color: "#FFFFFF", backgroundColor: "#FF2E63" }}
-                  onClick={() => this.props.logout()}
-                  variant="light"
-                >
-                  Logout <LogoutOutlined style={{ verticalAlign: "0px" }} />
-                </Button>
+                <>
+                  <Button className="m-2" onClick={this.onRefreshTasksClick}>
+                    Refresh Tasks{" "}
+                    <UndoOutlined style={{ verticalAlign: "0px" }} />
+                  </Button>
+
+                  <Button
+                    className="m-2"
+                    style={{ color: "#FFFFFF", backgroundColor: "#FF2E63" }}
+                    onClick={() => this.props.logout()}
+                    variant="light"
+                  >
+                    Logout <LogoutOutlined style={{ verticalAlign: "0px" }} />
+                  </Button>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>

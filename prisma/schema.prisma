@@ -13,8 +13,40 @@ generator client {
 model User {
   id            Int       @default(autoincrement()) @id
   displayName   String?
-  mail          String?   @unique
+  mail          String?
+  taskLists     TaskList[]         
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "users")
+}
+
+model Task {
+  id                      String @id
+  taskList                TaskList   @relation(fields: [taskListId], references: [id])
+  taskListId              String
+  importance              String?
+  isReminderOn            Boolean
+  status                  String?
+  title                   String
+  createdDateTime         String
+  lastModifiedDateTime    String
+  completedDateTime       String?
+  dueDateTime             String?
+  body                    String
+  createdAt               DateTime  @default(now()) @map(name: "created_at")
+  updatedAt               DateTime  @updatedAt @map(name: "updated_at")
+}
+
+model TaskList {
+  id                  String @id
+  creator             User   @relation(fields: [creatorId], references: [id])
+  creatorId           Int
+  tasks               Task[]
+  displayName         String
+  isOwner             Boolean
+  isShared            Boolean
+  title               String?
+  wellknownListName   String
+  createdAt           DateTime  @default(now()) @map(name: "created_at")
+  updatedAt           DateTime  @updatedAt @map(name: "updated_at")
 }

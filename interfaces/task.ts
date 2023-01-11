@@ -1,3 +1,5 @@
+import { TaskList } from "./taskList";
+
 interface BodyType {
   content: string;
   contentType: string;
@@ -18,7 +20,11 @@ export interface Task {
     dateTime: string;
     timeZone: string;
   };
-  dueDateTime: string;
+  dueDateTime: {
+    dateTime: string;
+    timeZone: string;
+  };
   id: string;
   body: BodyType;
+  taskList: TaskList;
 }
