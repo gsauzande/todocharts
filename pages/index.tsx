@@ -30,6 +30,20 @@ class IndexPage extends Component<AuthComponentProps> {
               </div>
             </Col>
           </Row>
+          <Row className="mt-5 center-block text-center">
+            <Col
+              className={`text-right ${styles.landingPageFont}`}
+              md={12}
+              xs={12}
+            >
+              <p>
+                Our powerful application gives you real-time insights into your
+                team's task management, <br />
+                allowing you to identify bottlenecks and boost productivity.
+              </p>
+              <p>Click below to try the individual version of Todocharts</p>
+            </Col>
+          </Row>
           <Row className="center-block text-center">
             <Col>
               <Button
@@ -42,25 +56,7 @@ class IndexPage extends Component<AuthComponentProps> {
               </Button>
             </Col>
           </Row>
-          <Row className="mt-5 center-block text-center">
-            <Col
-              className={`text-right ${styles.landingPageFont}`}
-              md={12}
-              xs={12}
-            >
-              <h2>See your finished tasks organized by date.</h2>
-              <p>
-                If you'd like to know how many tasks you completed the day
-                before or any previous day for that matter Todocharts can help
-                you with that.
-              </p>
-              <p>
-                You can also use Todocharts to prepare yourself for a morning
-                check-in meeting or simply to track how productive you were.
-              </p>
-            </Col>
-          </Row>
-          <Row className="mt-3 center-block text-center">
+          {/* <Row className="mt-3 center-block text-center">
             <Col md={12} xs={12}>
               <span>
                 <Image
@@ -71,15 +67,18 @@ class IndexPage extends Component<AuthComponentProps> {
                 />
               </span>
             </Col>
-          </Row>
+          </Row> */}
           <Row className="center-block text-center py-5">
             <footer>
+              Click&nbsp;
               <a
                 href="https://us3.list-manage.com/contact-form?u=7e7780872f87c9211e4360b20&form_id=470b361eb465e14260bf139ce541f7b2"
                 className={styles.link}
               >
-                Contact us
+                here
               </a>
+              &nbsp;if you would like to get a demo of Todocharts, request a
+              feature or report a bug.
             </footer>
           </Row>
           {/* <Row className="mt-5">

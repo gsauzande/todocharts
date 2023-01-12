@@ -9,8 +9,8 @@ export const TextDescription = () => {
         <br /> Microsoft To Do lists
       </h1>
       <p className={`${style.subtext} mt-3`}>
-        Todocharts provides you with analytics about your <br />
-        Microsoft To Do tasks and helps you keep track your productivity
+        Improve team efficiency and achieve more with <br />
+        Todocharts real-time analytics for Microsoft To Do
       </p>
     </div>
   );
